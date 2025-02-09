@@ -31,6 +31,7 @@ find_package(tf2_geometry_msgs REQUIRED)
 find_package(tf2_ros REQUIRED)
 find_package(rosidl_default_generators REQUIRED)
 find_package(image_geometry REQUIRED)
+find_package(tf2_msgs REQUIRED)
 
 # ffmpeg libraries
 #find_package(PkgConfig REQUIRED)
@@ -45,6 +46,7 @@ set(dependencies
   std_msgs
   sensor_msgs
   geometry_msgs
+  tf2_msgs
   cv_bridge
   image_common
   image_transport

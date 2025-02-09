@@ -88,6 +88,9 @@ void Node::init(const ORB_SLAM2::System::eSensor & sensor)
         node_name_ + "/map_points", 1);
   }
 
+  // ArduPilot tf publisher
+  ardu_tf_publisher_ = create_publisher<tf2_msgs::msg::TFMessage>("/ap/tf", 10);
+
   // Publish status
   status_publisher_ = create_publisher<orb_slam2_ros::msg::Status>(node_name_ + "/status", 10);
 
@@ -168,6 +171,16 @@ void Node::PublishPositionAsTransform(cv::Mat position)
     tmp_tf_stamped.child_frame_id = camera_frame_id_param_;
     tf2::impl::Converter<false, true>::convert(transform, tmp_tf_stamped.transform);
     tf_broadcaster_->sendTransform(tmp_tf_stamped);
+
+    // publish to ArduPilot tf in the odom frame
+    tf2_msgs::msg::TFMessage ardu_tf;
+    geometry_msgs::msg::TransformStamped ardu_tf_stamped;
+    ardu_tf_stamped.frame_id = "odom";
+    ardu_tf_stamped.header.stamp = current_frame_time_;
+    ardu_tf_stamped.child_frame_id = "base_link";
+    tf2::impl::Converter<false, true>::convert(transform, ardu_tf_stamped.transform);
+    ardu_tf.transforms.push_back(ardu_tf_stamped);
+    ardu_tf_publisher_->publish(ardu_tf);
   }
 }
 
