@@ -56,6 +56,9 @@ Node::Node(
   declare_parameter("ThDepth", rclcpp::ParameterValue(35.0f));
   declare_parameter("depth_map_factor", rclcpp::ParameterValue(1.0f));
   declare_parameter("camera_baseline", rclcpp::ParameterValue(0.0f));
+
+  // Custom parameters
+  declare_parameter("prerectified", rclcpp::ParameterValue(false)); // if image is already rectivied
 }
 
 void Node::init(const ORB_SLAM2::System::eSensor & sensor)
@@ -69,6 +72,7 @@ void Node::init(const ORB_SLAM2::System::eSensor & sensor)
   get_parameter("map_file", map_file_name_param_);
   get_parameter("voc_file", voc_file_name_param_);
   get_parameter("load_map", load_map_param_);
+  get_parameter("prerectified", prerectified_);
 
   sensor_ = sensor;
 
@@ -173,6 +177,7 @@ void Node::PublishPositionAsTransform(cv::Mat position)
     tf_broadcaster_->sendTransform(tmp_tf_stamped);
 
     // publish to ArduPilot tf in the odom frame
+    // TODO transform cam to base 
     tf2_msgs::msg::TFMessage ardu_tf;
     geometry_msgs::msg::TransformStamped ardu_tf_stamped;
     ardu_tf_stamped.frame_id = "odom";
@@ -366,11 +371,21 @@ void Node::LoadOrbParameters(sensor_msgs::msg::CameraInfo::SharedPtr camera_info
     parameters.cx = camera_info->k[2];
     parameters.cy = camera_info->k[5];
 
-    parameters.k1 = camera_info->d[0];
-    parameters.k2 = camera_info->d[1];
-    parameters.p1 = camera_info->d[2];
-    parameters.p2 = camera_info->d[3];
-    parameters.k3 = camera_info->d[4];
+    if (prerectified_) {
+      RCLCPP_INFO(get_logger(), "Pre-rectified, setting distortions to 0.");
+      parameters.k1 = camera_info->0.0;
+      parameters.k2 = camera_info->0.0;
+      parameters.p1 = camera_info->0.0;
+      parameters.p2 = camera_info->0.0;
+      parameters.k3 = camera_info->0.0;
+    } else {
+      parameters.k1 = camera_info->d[0];
+      parameters.k2 = camera_info->d[1];
+      parameters.p1 = camera_info->d[2];
+      parameters.p2 = camera_info->d[3];
+      parameters.k3 = camera_info->d[4];
+    }
+    
   }
 
   if (sensor_ == ORB_SLAM2::System::STEREO || sensor_ == ORB_SLAM2::System::RGBD) {

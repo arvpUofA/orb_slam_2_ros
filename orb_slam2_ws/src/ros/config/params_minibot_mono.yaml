@@ -26,3 +26,4 @@ orb_slam2_mono:
     camera_fps: 30
     #Color order of the images (0: BGR, 1: RGB. It is ignored if images are grayscale) 
     camera_rgb_encoding: true
+    prerectified: true

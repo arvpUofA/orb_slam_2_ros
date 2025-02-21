@@ -126,6 +126,7 @@ private:
   bool publish_pointcloud_param_;
   bool publish_tf_param_;
   bool publish_pose_param_;
+  bool prerectified_;
   int min_observations_per_point_;
 };
 
