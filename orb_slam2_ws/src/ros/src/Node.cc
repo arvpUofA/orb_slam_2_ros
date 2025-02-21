@@ -180,7 +180,7 @@ void Node::PublishPositionAsTransform(cv::Mat position)
     // TODO transform cam to base 
     tf2_msgs::msg::TFMessage ardu_tf;
     geometry_msgs::msg::TransformStamped ardu_tf_stamped;
-    ardu_tf_stamped.frame_id = "odom";
+    ardu_tf_stamped.header.frame_id = "odom";
     ardu_tf_stamped.header.stamp = current_frame_time_;
     ardu_tf_stamped.child_frame_id = "base_link";
     tf2::impl::Converter<false, true>::convert(transform, ardu_tf_stamped.transform);
@@ -373,11 +373,11 @@ void Node::LoadOrbParameters(sensor_msgs::msg::CameraInfo::SharedPtr camera_info
 
     if (prerectified_) {
       RCLCPP_INFO(get_logger(), "Pre-rectified, setting distortions to 0.");
-      parameters.k1 = camera_info->0.0;
-      parameters.k2 = camera_info->0.0;
-      parameters.p1 = camera_info->0.0;
-      parameters.p2 = camera_info->0.0;
-      parameters.k3 = camera_info->0.0;
+      parameters.k1 = 0.0;
+      parameters.k2 = 0.0;
+      parameters.p1 = 0.0;
+      parameters.p2 = 0.0;
+      parameters.k3 = 0.0;
     } else {
       parameters.k1 = camera_info->d[0];
       parameters.k2 = camera_info->d[1];
