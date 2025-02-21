@@ -106,7 +106,7 @@ private:
   rclcpp::Publisher<orb_slam2_ros::msg::Status>::SharedPtr status_publisher_;
   rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr map_points_publisher_;
   rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pose_publisher_;
-  rclcpp::Publisher<tf2_msgs/msg/TFMessage>::SharedPtr ardu_tf_publisher_;
+  rclcpp::Publisher<tf2_msgs::msg::TFMessage>::SharedPtr ardu_tf_publisher_;
   rclcpp::Subscription<sensor_msgs::msg::CameraInfo>::SharedPtr camera_info_sub_;  // Not used in H264StereoNode
   rclcpp::Service<orb_slam2_ros::srv::SaveMap>::SharedPtr service_server_;
 
