@@ -54,7 +54,7 @@
 #include "tf2_ros/transform_listener.h"
 #include "tf2_ros/create_timer_ros.h"
 #include "tf2/utils.h"
-#include "tf2_msgs/msg/TFMessage.h"
+#include "tf2_msgs/msg/tf_message.h"
 
 #include "orb_slam2_ros/srv/save_map.hpp"
 
