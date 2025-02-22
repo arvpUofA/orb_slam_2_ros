@@ -13,8 +13,8 @@ def generate_launch_description():
     voc_file = LaunchConfiguration("voc_file")
 
     remappings = [
-        ("/camera/image_raw", "/cameras/front/image_raw"),
-        ("/camera/camera_info", "/cameras/front/camera_info"),
+        ("/camera/image_raw", "/cameras/front"),
+        ("/camera/camera_info", "/cameras/front/info"),
     ]
 
     return LaunchDescription(
@@ -50,8 +50,8 @@ def generate_launch_description():
                     {"voc_file": voc_file, "use_sim_time": use_sim_time},
                 ],
                 package="orb_slam2_ros",
-                node_executable="orb_slam2_ros_mono",
-                node_name="orb_slam2_mono",
+                executable="orb_slam2_ros_mono",
+                name="orb_slam2_mono",
                 output="screen",
                 remappings=remappings,
             ),
