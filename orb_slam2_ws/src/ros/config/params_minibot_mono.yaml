@@ -15,7 +15,7 @@ orb_slam2_mono:
     min_num_kf_in_map: 5
 
     #ORB parameters
-    ORBextractor/nFeatures: 2000
+    ORBextractor/nFeatures: 500
     ORBextractor/scaleFactor: 1.2
     ORBextractor/nLevels: 8
     ORBextractor/iniThFAST: 20
